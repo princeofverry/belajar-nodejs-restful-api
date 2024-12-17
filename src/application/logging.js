@@ -1,7 +1,7 @@
-import winston, { format, transport } from "winston";
+import winston from "winston";
 
-export const logger = winston.logger({
+export const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
-  transport: [new winston.transports.Console({})],
+  transports: [new winston.transports.Console({})],
 });
