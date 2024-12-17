@@ -3,10 +3,6 @@ import { web } from "../src/application/web.js";
 import { prismaClient } from "../src/application/database.js";
 
 describe("POST /api/users", function () {
-  beforeEach(async () => {
-    await prismaClient.user.deleteMany();
-  });
-
   afterEach(async () => {
     await prismaClient.user.deleteMany({
       where: {
@@ -23,6 +19,7 @@ describe("POST /api/users", function () {
     });
 
     expect(result.status).toBe(200);
+    console.log(result.body);
     expect(result.body.data.username).toBe("test");
     expect(result.body.data.name).toBe("Verry Kurniawan");
     expect(result.body.data.password).toBeUndefined();
