@@ -175,4 +175,42 @@ describe("PATCH /api/users/current", function () {
     const user = await getTestUser();
     expect(await bcrypt.compare("rahasiaLagi", user.password)).toBe(true);
   });
+
+  it("should can update name", async () => {
+    const result = await supertest(web)
+      .patch("/api/users/current")
+      .set("Authorization", "test")
+      .send({
+        name: "Verry",
+      });
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.username).toBe("test");
+    expect(result.body.data.name).toBe("Verry");
+  });
+
+  it("should can update password", async () => {
+    const result = await supertest(web)
+      .patch("/api/users/current")
+      .set("Authorization", "test")
+      .send({
+        password: "rahasiaLagi",
+      });
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.username).toBe("test");
+    expect(result.body.data.name).toBe("test");
+
+    const user = await getTestUser();
+    expect(await bcrypt.compare("rahasiaLagi", user.password)).toBe(true);
+  });
+
+  it("should reject if request is not valid", async () => {
+    const result = await supertest(web)
+      .patch("/api/users/current")
+      .set("Authorization", "salah")
+      .send({});
+
+    expect(result.status).toBe(401);
+  });
 });
